@@ -1,5 +1,7 @@
 # deprecate
 
+[![Build Status](https://secure.travis-ci.org/brianc/node-deprecate.png?branch=master)](http://travis-ci.org/brianc/node-deprecate)
+
 Mark a method as deprecated.  Write a message to a stream the first time the deprecated method is called.
 
 ## api

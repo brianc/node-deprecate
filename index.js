@@ -25,4 +25,4 @@ var deprecate = module.exports = function(methodName, message) {
 
 deprecate.stream = process.stderr;
 deprecate.silence = false;
-deprecate.color = '\x1b[31;1m';
+deprecate.color = deprecate.stream.isTTY && '\x1b[31;1m';

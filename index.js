@@ -88,11 +88,11 @@ function getLocation() {
     var stackIndexOfDeprecatedFunctionCall = 4;
 
     /*
-      0: getRawStack - line error is created
-      1: getLocation - line getRawStack() is called
-      2: deprecate - line getLocation() is called
-      3: "the deprecated function" - line deprecate() is called
-      4: "the function that called the deprecated function" - line the deprecated function is called
+      0: getRawStack: call to new Error()
+      1: getLocation: call to getRawStack()
+      2: deprecate: call to getLocation()
+      3: "the deprecated function": call to deprecate()
+      4: "the function that called the deprecated function": call to the deprecated function
     */
 
     try {

@@ -6,11 +6,18 @@ var cwd = typeof process !== 'undefined' && process.cwd() + '/' || '';
 var linebreak = isWindows ? '\r\n' : '\n';
 var newline = /(\r\n|\r|\n)/g;
 var slice = [].slice;
-var noop = function(){};
-var noopReturn = function(r){ return r; };
 var hits = {};
 
-var deprecate = module.exports = !isDevelopment ? noop : function() {
+deprecate = module.exports = isDevelopment ? deprecate : noop;
+deprecate.method = isDevelopment ? method : noop;
+deprecate.fn = isDevelopment ? fn : noopReturn;
+deprecate.log = log;
+deprecate.stream = typeof process !== 'undefined' && process.stderr;
+deprecate.silence = false;
+deprecate.color = deprecate.stream && deprecate.stream.isTTY;
+deprecate.colors = { warning:'\x1b[31;1m', message:false, location:'\u001b[90m' };
+
+function deprecate() {
   var options;
   var location;
   var args = arguments;
@@ -43,7 +50,7 @@ var deprecate = module.exports = !isDevelopment ? noop : function() {
   deprecate.log(linebreak);
 };
 
-deprecate.method = !isDevelopment ? noop : function(object, methodName) {
+function method(object, methodName) {
     var originalMethod = object[methodName];
     var args = slice.call(arguments, 2);
 
@@ -53,16 +60,16 @@ deprecate.method = !isDevelopment ? noop : function(object, methodName) {
     };
 }
 
-deprecate.function = !isDevelopment ? noopReturn : function(fn) {
+function fn(original) {
   var args = slice.call(arguments, 1);
 
   return function() {
     deprecate.apply(null, args);
-    return fn.apply(this, arguments);
+    return original.apply(this, arguments);
   }
 }
 
-deprecate.log = function(message, color) {
+function log(message, color) {
   var formatted = format(message, color);
   if(deprecate.stream) {
     deprecate.stream.write(formatted+linebreak);
@@ -70,11 +77,6 @@ deprecate.log = function(message, color) {
     logger.warn(formatted);
   }
 }
-
-deprecate.stream = typeof process !== 'undefined' && process.stderr;
-deprecate.silence = false;
-deprecate.color = deprecate.stream && deprecate.stream.isTTY;
-deprecate.colors = { warning:'\x1b[31;1m', message:false, location:'\u001b[90m' };
 
 function format(message, color) {
   return color && deprecate.color ? color + message + '\x1b[0m' : message;
@@ -104,3 +106,6 @@ function getLocation() {
 
     return location;
 }
+
+function noop(){};
+function noopReturn(r) { return r; };

@@ -103,7 +103,7 @@ describe('deprecate', function() {
   it('can wrap a function', function() {
     var called;
 
-    var foo = deprecate.function(function foo(a, b, c) {
+    var foo = deprecate.fn(function foo(a, b, c) {
       called = { a:a, b:b, c:c };
     }, 'Don\'t call foo');
 

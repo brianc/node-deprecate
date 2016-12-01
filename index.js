@@ -83,18 +83,32 @@ function format(message, color) {
 }
 
 function getLocation() {
+    var frame;
     var location = '';
-    var stackIndex = 3;
+    var stackIndexOfDeprecatedFunctionCall = 4;
+
+    /*
+      0: getRawStack - line error is created
+      1: getLocation - line getRawStack() is called
+      2: deprecate - line getLocation() is called
+      3: "the deprecated function" - line deprecate() is called
+      4: "the function that called the deprecated function" - line the deprecated function is called
+    */
 
     try {
-      var frame;
-      var restore = patch(Error, 'prepareStackTrace', returnStack);
-      frame = new Error().stack[stackIndex];
-      restore();
+      frame = getRawStack()[stackIndexOfDeprecatedFunctionCall];
       location = frame.getFileName()+':'+frame.getLineNumber()+':'+frame.getColumnNumber();
     } catch(e) {}
 
     return location;
+}
+
+function getRawStack() {
+  var stack;
+  var restore = patch(Error, 'prepareStackTrace', returnStack);
+  stack = new Error().stack;
+  restore();
+  return stack;
 }
 
 function patch(object, method, replacement) {

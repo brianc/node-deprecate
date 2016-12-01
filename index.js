@@ -87,24 +87,26 @@ function getLocation() {
     var stackIndex = 3;
 
     try {
-        // Save original Error.prepareStackTrace
-        var origPrepareStackTrace = Error.prepareStackTrace;
-
-        // Override with function that just returns `stack`
-        Error.prepareStackTrace = function (_, stack) {
-            return stack;
-        };
-
-        // Evaluate `Error.stack`, which calls our new `Error.prepareStackTrace`
-        var frame = new Error().stack[stackIndex];
-
-        // Restore original `Error.prepareStackTrace`
-        Error.prepareStackTrace = origPrepareStackTrace;
-
-        location = frame.getFileName()+':'+frame.getLineNumber()+':'+frame.getColumnNumber();
+      var frame;
+      var restore = patch(Error, 'prepareStackTrace', returnStack);
+      frame = new Error().stack[stackIndex];
+      restore();
+      location = frame.getFileName()+':'+frame.getLineNumber()+':'+frame.getColumnNumber();
     } catch(e) {}
 
     return location;
+}
+
+function patch(object, method, replacement) {
+  var original = object[method];
+  object[method] = replacement;
+  return function restore() {
+    object[method] = original;
+  }
+}
+
+function returnStack(_, stack) {
+  return stack;
 }
 
 function noop(){};

@@ -57,7 +57,7 @@ function deprecate() {
     output += linebreak + format(args[i], deprecate.colors.message);
   }
 
-  if(location) {
+  if(options.location !== false && location) {
     output += linebreak + format('  at '+location.replace(cwd, ''), deprecate.colors.location);
   }
 

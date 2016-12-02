@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/brianc/node-deprecate.png?branch=master)](http://travis-ci.org/brianc/node-deprecate)
 
-Mark a method as deprecated.  Write a message to a stream once for each location in an application the deprecated method is called.
+Mark a method as deprecated.  Write a message to a stream once for each location in an application the deprecated method is called from.
 
 ## api
 
@@ -83,7 +83,7 @@ When `true`, do nothing when the deprecate method is called.
 
 ### deprecate.stream
 
-The to which output is written.  Defaults to `process.stderr`.
+The stream to which output is written.  Defaults to `process.stderr`.
 
 ### deprecate.log(message)
 

@@ -26,7 +26,10 @@ if(typeof module !== 'undefined' && module.exports) {
 function deprecate() {
   var options;
   var location;
+  var getCallToDeprecate;
   var args = arguments;
+
+  if(deprecate.silence) return;
 
   if(typeof args[args.length-1] === 'object') {
     options = args[args.length-1];
@@ -35,25 +38,30 @@ function deprecate() {
     options = {};
   }
 
-  location = (options.location || getLocation()).replace(cwd, '');
+  if(options.location === false) {
+    // When the user explictly sets location to false,
+    // We will get the location of the call to deprecate()
+    // is called, instead of the location of the call to the
+    // deprecated function.
+    getCallToDeprecate = true;
+  }
 
-  if(deprecate.silence) return;
+  location = options.location || getLocation(getCallToDeprecate);
+
   if(hits[location || deprecate.caller]) return;
+  else hits[location || deprecate.caller] = true;
 
-  hits[location || deprecate.caller] = true;
-
-  deprecate.log('');
-  deprecate.log('WARNING!!', deprecate.colors.warning);
+  var output = format('WARNING!!', deprecate.colors.warning);
 
   for(var i = 0; i < args.length; i++) {
-    deprecate.log(args[i], deprecate.colors.message);
+    output += linebreak + format(args[i], deprecate.colors.message);
   }
 
   if(location) {
-    deprecate.log('  at '+location, deprecate.colors.location);
+    output += linebreak + format('  at '+location.replace(cwd, ''), deprecate.colors.location);
   }
 
-  deprecate.log(linebreak);
+  deprecate.log(linebreak + output + linebreak);
 };
 
 function method(object, methodName) {
@@ -88,25 +96,27 @@ function format(message, color) {
   return color && deprecate.color ? color + message + '\x1b[0m' : message;
 }
 
-function getLocation() {
-    var frame;
-    var location = '';
-    var stackIndexOfDeprecatedFunctionCall = 4;
+function getLocation(getCallToDeprecate) {
+  var stack;
+  var frame;
+  var location = '';
+  var index = getCallToDeprecate ? 3 : 4;
 
-    /*
-      0: getRawStack: call to new Error()
-      1: getLocation: call to getRawStack()
-      2: deprecate: call to getLocation()
-      3: "the deprecated function": call to deprecate()
-      4: "the function that called the deprecated function": call to the deprecated function
-    */
+  /*
+    0: In getRawStack(), the call to new Error()
+    1: In getLocation(), the call to getRawStack()
+    2: In deprecate(), the call to getLocation()
+    3: In the deprecated function, the call to deprecate()
+    4: The call to the deprecated function (THIS IS THE DEFAULT)
+  */
 
-    try {
-      frame = getRawStack()[stackIndexOfDeprecatedFunctionCall];
-      location = frame.getFileName()+':'+frame.getLineNumber()+':'+frame.getColumnNumber();
-    } catch(e) {}
+  try {
+    stack = getRawStack();
+    frame = stack[index] || stack[3];
+    location = frame.getFileName()+':'+frame.getLineNumber()+':'+frame.getColumnNumber();
+  } catch(e) {}
 
-    return location;
+  return location;
 }
 
 function getRawStack() {

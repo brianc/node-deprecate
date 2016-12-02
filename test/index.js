@@ -53,6 +53,24 @@ describe('deprecate', function() {
     assert(text.indexOf(deprecate.colors.warning) > 0, 'should have color');
   });
 
+  it('allows location to be turned off and then only prints once per call', function() {
+    function foo() {
+      deprecate('foo is deprecated', { location:false });
+    }
+
+    assert.equal(output._text.length, 0);
+
+    // logs the first time
+    foo();
+    var text = output._text.join(' ');
+    var length = output._text.length;
+    assert(text.indexOf('WARNING') > 0, 'should have contained the string "warning"');
+    assert.equal(text.indexOf(' at '), -1, 'should not have the location');
+
+    // but not the second
+    foo();
+    assert.equal(output._text.length, length);
+  })
 
   it('does not print color if color turned off', function() {
     deprecate.color = false;

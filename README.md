@@ -9,10 +9,9 @@ Mark a method as deprecated.  Write a message to a stream once for each location
 `var deprecate = require('deprecate');`
 
 ### deprecate()
-> function signature:
-```js
-deprecate([String message1 [, String message2 [,...]]], [Object options])
-```
+<sup>
+`deprecate([String message1 [, String message2 [,...]]], [Object options])`
+</sup>
 
 Call `deprecate` within a function you are deprecating.  It will spit out all the messages to the console the first time _and only the first time_ the method is called.
 
@@ -37,10 +36,9 @@ _program output:_
 **`location`**: a string in the format `${filepath}:${line}:${column}` indicating where the deprecated function was called from.  _TODO: `false` disables outputting the location and will only log the message once._
 
 ### deprecate.method()
-> function signature:
-```js
-deprecate.method(Object proto, String methodName, [String message1 [, String message2 [,...]]], [Object options])
-```
+<sup>
+`deprecate.method(Object proto, String methodName, [String message1 [, String message2 [,...]]], [Object options])`
+</sup>
 
 Deprecates a method on an object:
 
@@ -49,10 +47,9 @@ deprecate.method(console, 'log', 'You should not log.');
 ```
 
 ### deprecate.fn()
-> function signature:
-```js
-deprecate.fn(Function func, [String message1 [, String message2 [,...]]], [Object options])
-```
+<sup>
+`deprecate.fn(Function func, [String message1 [, String message2 [,...]]], [Object options])`
+</sup>
 
 Deprecates a function and returns it:
 

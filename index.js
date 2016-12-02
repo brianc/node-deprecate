@@ -8,7 +8,7 @@ var newline = /(\r\n|\r|\n)/g;
 var slice = [].slice;
 var hits = {};
 
-deprecate = module.exports = isDevelopment ? deprecate : noop;
+deprecate = isDevelopment ? deprecate : noop;
 deprecate.method = isDevelopment ? method : noop;
 deprecate.fn = isDevelopment ? fn : noopReturn;
 deprecate.log = log;
@@ -16,6 +16,12 @@ deprecate.stream = typeof process !== 'undefined' && process.stderr;
 deprecate.silence = false;
 deprecate.color = deprecate.stream && deprecate.stream.isTTY;
 deprecate.colors = { warning:'\x1b[31;1m', message:false, location:'\u001b[90m' };
+
+if(typeof module !== 'undefined' && module.exports) {
+  module.exports = deprecate;
+} else if(typeof window !== 'undefined') {
+  window.deprecate = deprecate;
+}
 
 function deprecate() {
   var options;

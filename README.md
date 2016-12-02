@@ -73,13 +73,9 @@ Controls the colors used when logging. Default value:
 }
 ```
 
-_How the default looks on a light background:_
+_How the default looks on a dark background vs. a light background:_
 
-<img width="344" src="https://cloud.githubusercontent.com/assets/1958812/20812832/f2a1edb6-b7c7-11e6-81f5-73319ae5f968.png">
-
-_And on a dark background:_
-
-<img width="373" src="https://cloud.githubusercontent.com/assets/1958812/20812831/f2a1cde0-b7c7-11e6-93e6-1613e028e719.png">
+<img width="373" src="https://cloud.githubusercontent.com/assets/1958812/20812831/f2a1cde0-b7c7-11e6-93e6-1613e028e719.png"><img width="344" src="https://cloud.githubusercontent.com/assets/1958812/20812832/f2a1edb6-b7c7-11e6-81f5-73319ae5f968.png">
 
 ### deprecate.silence
 

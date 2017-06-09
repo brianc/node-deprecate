@@ -39,11 +39,11 @@ Set to `false` to not output a color.  Defaults to `'\x1b[31;1m'` which is red.
 
 ### deprecate.silence
 
-Do nothing at all when the deprecate method is called.
+Set to `false` to do nothing at all when the deprecate method is called.  Useful in tests of the library you're deprecating things within.
 
 ### deprecate.stream
 
-The to which output is written.  Defaults to `process.stderr`
+The stream to which output is written.  Defaults to `process.stderr`
 
 ## license
 

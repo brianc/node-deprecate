@@ -28,7 +28,7 @@ describe('deprecate', function() {
     deprecate.silence = false;
     deprecate('line1', 'line2', 'line3');
     var text = output._text.join(' ');
-    assert(text.indexOf('WARNING') > 0, 'should have contained the string "warning"');
+    assert(text.indexOf('Warning') > 0, 'should have contained the string "warning"');
     assert(text.indexOf('line1') > 0, 'should have contained the string "line1"');
     assert(text.indexOf('line2') > 0, 'should have contained the string "line2"');
     assert(text.indexOf('line2') > text.indexOf('line1'), 'line 2 should come after line 1');

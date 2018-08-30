@@ -19,6 +19,7 @@ function nodeDeprecate(methodName, message) {
   deprecate.stream.write('Warning: ' + methodName + ' has been deprecated.');
   deprecate.stream.write(EOL);
   for(var i = 1; i < arguments.length; i++) {
+    if (typeof arguments[i] === 'undefined') break;
     deprecate.stream.write(arguments[i]);
     deprecate.stream.write(EOL);
   }
@@ -32,6 +33,7 @@ function nodeDeprecate(methodName, message) {
 function browserDeprecate(methodName, message) {
   console.warn(methodName, ' has been deprecated.');
   for(var i = 1; i < arguments.length; i++) {
+    if (typeof arguments[i] === 'undefined') break;
     console.log(arguments[i]);
   }
 }

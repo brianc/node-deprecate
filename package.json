@@ -1,6 +1,6 @@
 {
   "name": "deprecate",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Mark methods as deprecated and warn the user when they're called",
   "main": "index.js",
   "scripts": {

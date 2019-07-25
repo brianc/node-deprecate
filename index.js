@@ -36,7 +36,7 @@ function browserDeprecate(methodName, message) {
   }
 }
 
-if (typeof process !== 'undefined') {
+if (typeof process !== 'undefined' && typeof process.stderr !== 'undefined') {
   deprecate.stream = process.stderr;
   deprecate.color = deprecate.stream.isTTY && '\x1b[31;1m';
 }
